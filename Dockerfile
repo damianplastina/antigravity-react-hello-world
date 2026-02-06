@@ -23,6 +23,14 @@ COPY . .
 
 RUN npm run build
 
+# Nueva etapa de pruebas para el pipeline de CI
+FROM base AS tester
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+# Ejecutamos los tests. Si fallan, la construcción de la imagen se detendrá.
+RUN npm test
+
 # Imagen de producción, copiar todos los archivos y ejecutar next
 FROM base AS runner
 WORKDIR /app
@@ -54,3 +62,4 @@ ENV PORT=3000
 # server.js es creado por next build desde la salida standalone
 # https://nextjs.org/docs/pages/api-reference/next-config-js/output
 CMD ["node", "server.js"]
+
