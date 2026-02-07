@@ -45,17 +45,10 @@ jobs:
     name: Publish to GHCR
     needs: build
     runs-on: ubuntu-latest
+    environment: production
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Manual Approval
-        uses: trstringer/manual-approval@v1
-        with:
-          secret: ${{ secrets.GITHUB_TOKEN }}
-          approvers: ${{ github.actor }} # Tú serás el encargado de aprobar
-          issue-title: "Despliegue a producción: Versión ${{ github.sha }}"
-          issue-body: "Por favor, revisa los cambios y aprueba este despliegue comentando 'approve' en esta issue."
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
