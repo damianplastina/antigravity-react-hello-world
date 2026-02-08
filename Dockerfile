@@ -55,11 +55,11 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 USER nextjs
 
-EXPOSE 3000
-
+# Render inyecta automáticamente la variable PORT, Next.js standalone la usará.
+# Si no está presente, usamos 3000 por defecto para compatibilidad local.
 ENV PORT=3000
+ENV HOSTNAME="0.0.0.0"
 
 # server.js es creado por next build desde la salida standalone
-# https://nextjs.org/docs/pages/api-reference/next-config-js/output
 CMD ["node", "server.js"]
 
